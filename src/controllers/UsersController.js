@@ -32,18 +32,19 @@ class UsersController {
             throw new appError("this email it's already in use")
         }
 
-        if (newPassword && !currentPassword) {
-            throw new appError("you must provide your current password if you want it to be updated")
-        }
-        const passwordCheck = await compare(currentPassword, user.password)
-        if (!passwordCheck) {
-            throw new appError("the given password it's wrong!")
-        } else {
+        if (newPassword) {
+            if (newPassword && !currentPassword) {
+                throw new appError("you must provide your current password if you want it to be updated")
+            }
+            const passwordCheck = await compare(currentPassword, user.password)
+            if (!passwordCheck) {
+                throw new appError("the given password it's wrong!")
+            }
             user.password = await hash( newPassword, 8 )
         }
-
-        user.name = name ?? user.name
-        user.email = email ?? user.email
+        
+        user.name = name ? name : user.name
+        user.email = email ? email : user.email
 
         await knex('users').where({ id }).update({ name: user.name, email: user.email, password: user.password})
 
