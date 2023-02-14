@@ -9,18 +9,19 @@ class NotesController {
 
         const note_id = await knex('notes').insert({ title, description, user_id })
 
-        const tagsInfo = tags.map(tag => {
+
+        const tagsInfo = tags.split(',').map(tag => {
             return {
-                name: tag,
+                name: tag.trim(),
                 user_id,
                 note_id
             }
         })
         await knex('tags').insert(tagsInfo)
 
-        const linksInfo = links.map(link => {
+        const linksInfo = links.split(',').map(link => {
             return {
-                url: link,
+                url: link.trim(),
                 note_id
             }
         })

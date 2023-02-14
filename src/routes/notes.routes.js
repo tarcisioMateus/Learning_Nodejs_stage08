@@ -5,6 +5,6 @@ const notesController = new NotesController()
 
 const notesRoutes = Router()
 
-notesRoutes.post('/', notesController.create)
+notesRoutes.post('/:user_id', notesController.create)
 
 module.exports = notesRoutes
