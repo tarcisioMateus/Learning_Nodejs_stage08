@@ -1,4 +1,4 @@
-const knex = requeri('../database/knex')
+const knex = require('../database/knex')
 
 class TagsController {
     async index (request, response) {
