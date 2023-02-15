@@ -36,12 +36,9 @@ class NotesController {
 
     async index (request, response) {
         const { user_id } = request.params
+        const { title } = request.query
 
-        const userNotes = await knex('notes').select([ 
-            "id",
-            "title",
-            "description"
-        ]).where({ user_id }).orderBy("title")
+        const userNotes = await getUserNotes( user_id, title )
 
         const userTags = await knex('tags').where({ user_id })
 
@@ -52,6 +49,24 @@ class NotesController {
 }
 
 module.exports = NotesController
+
+async function getUserNotes (user_id, title = undefined) {
+    let userNotes
+    if (title) {
+        userNotes = await knex('notes').select([ 
+            "id",
+            "title",
+            "description"
+        ]).where({ user_id }).whereLike("title", `%${title}%`).orderBy("title")
+    } else {
+        userNotes = await knex('notes').select([ 
+            "id",
+            "title",
+            "description"
+        ]).where({ user_id }).orderBy("title")
+    }
+    return userNotes
+}
 
 function getNotesWithTags (userNotes, userTags) {
     const notesWithTags = userNotes.map( note => {
