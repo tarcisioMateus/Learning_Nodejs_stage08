@@ -35,8 +35,7 @@ class NotesController {
     }
 
     async index (request, response) {
-        const { user_id } = request.params
-        const { title, tags } = request.query
+        const { user_id, title, tags } = request.query
 
         let userNotes 
         if (tags) {
@@ -50,6 +49,24 @@ class NotesController {
         const notesWithTags = getNotesWithTags (userNotes, userTags)
 
         return response.json(notesWithTags)
+    }
+
+    async show (request, response) {
+        const { id } = request.params 
+
+        const note = await knex('notes').where({ id }) 
+
+        let tags = await knex('tags').where({note_id: id}).orderBy("name")
+        tags = tags.map( tag => tag.name)
+
+        let links = await knex('links').where({note_id: id}).orderBy("created_at")
+        links = links.map( link => link.url)
+
+        response.json({
+            ...note,
+            tags,
+            links
+        })
     }
 }
 
@@ -71,7 +88,7 @@ async function getUserNotes (user_id, title = undefined) {
     return userNotes
 }
 
-async function indexSearchWithTags ( tags, user_id, title = undefined ) {
+async function indexSearchWithTags (tags, user_id, title = undefined) {
     let userNotes
     const mappedTags = tags.split(',').map(tag => tag.trim())
 
