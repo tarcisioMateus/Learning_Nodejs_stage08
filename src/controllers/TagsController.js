@@ -4,11 +4,22 @@ class TagsController {
     async index (request, response) {
         const { user_id } = request.params
 
-        let tags = await knex('tags').where({ user_id })
+        let tags = await knex('tags').where({ user_id }).orderBy("name")
         tags = tags.map( tag => tag.name )
+        tags = tagsOneEntryOnly ( tags )
 
         return response.json(tags)
     }
 }
 
 module.exports = TagsController
+
+function tagsOneEntryOnly ( tags ) {
+    let filteredTags = []
+    for ( const tag of tags ) {
+        if ( !filteredTags.includes(tag) ) {
+            filteredTags.push(tag)
+        }
+    }
+    return filteredTags
+}
