@@ -62,11 +62,19 @@ class NotesController {
         let links = await knex('links').where({note_id: id}).orderBy("created_at")
         links = links.map( link => link.url)
 
-        response.json({
+        return response.json({
             ...note,
             tags,
             links
         })
+    }
+
+    async delete (request, response) {
+        const { id } = request.params
+
+        await knex('notes').where({ id }).delete()
+
+        return response.json()
     }
 }
 
