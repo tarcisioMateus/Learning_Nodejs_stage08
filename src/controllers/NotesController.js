@@ -1,4 +1,3 @@
-const { response } = require('express')
 const knex = require('../database/knex')
 
 const appError = require('../utils/appError')
@@ -54,7 +53,7 @@ class NotesController {
     async show (request, response) {
         const { id } = request.params 
 
-        const note = await knex('notes').where({ id }) 
+        const note = await knex('notes').where({ id }).first() 
 
         let tags = await knex('tags').where({note_id: id}).orderBy("name")
         tags = tags.map( tag => tag.name)
