@@ -36,9 +36,14 @@ class NotesController {
 
     async index (request, response) {
         const { user_id } = request.params
-        const { title } = request.query
+        const { title, tags } = request.query
 
-        const userNotes = await getUserNotes( user_id, title )
+        let userNotes 
+        if (tags) {
+            userNotes = await indexSearchWithTags ( tags, user_id, title )
+        } else {
+            userNotes = await getUserNotes( user_id, title )
+        }
 
         const userTags = await knex('tags').where({ user_id })
 
@@ -55,15 +60,38 @@ async function getUserNotes (user_id, title = undefined) {
     if (title) {
         userNotes = await knex('notes').select([ 
             "id",
-            "title",
-            "description"
+            "title"
         ]).where({ user_id }).whereLike("title", `%${title}%`).orderBy("title")
     } else {
         userNotes = await knex('notes').select([ 
             "id",
-            "title",
-            "description"
+            "title"
         ]).where({ user_id }).orderBy("title")
+    }
+    return userNotes
+}
+
+async function indexSearchWithTags ( tags, user_id, title = undefined ) {
+    let userNotes
+    const mappedTags = tags.split(',').map(tag => tag.trim())
+
+    if (title) {
+        userNotes = await knex('tags').select([
+            "notes.title",
+            "notes.id",
+        ]).where('notes.user_id', user_id)
+        .whereLike('notes.title', `%${title}%`)
+        .whereIn('tags.name', mappedTags)
+        .innerJoin('notes', 'notes.id', 'tags.note_id')
+        .orderBy("notes.title")
+    } else {
+        userNotes = await knex('tags').select([
+            "notes.title",
+            "notes.id",
+        ]).where('notes.user_id', user_id)
+        .whereIn('tags.name', mappedTags)
+        .innerJoin('notes', 'notes.id', 'tags.note_id')
+        .orderBy("notes.title")
     }
     return userNotes
 }
