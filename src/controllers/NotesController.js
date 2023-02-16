@@ -117,7 +117,18 @@ async function indexSearchWithTags (tags, user_id, title = undefined) {
         .innerJoin('notes', 'notes.id', 'tags.note_id')
         .orderBy("notes.title")
     }
+    userNotes = notesOneEntryOnly( userNotes )
     return userNotes
+}
+function notesOneEntryOnly ( notes ) {
+    let filteredNotes = []
+    for ( const note of notes ) {
+        if (filteredNotes.filter(fN => fN.id == note.id).length) {
+            continue
+        }
+        filteredNotes.push(note)
+    }
+    return filteredNotes
 }
 
 function getNotesWithTags (userNotes, userTags) {
