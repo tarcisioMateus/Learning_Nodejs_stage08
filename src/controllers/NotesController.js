@@ -7,18 +7,18 @@ class NotesController {
         const { title, description, tags, links } = request.body
         const { user_id } = request.params
 
+        createInputValidation (title, description, tags, links)
+
         const note_id = await knex('notes').insert({ title, description, user_id })
 
-        if (tags) {
-            const tagsInfo = tags.split(',').map(tag => {
-                return {
-                    name: tag.trim(),
-                    user_id,
-                    note_id
-                }
-            })
-            await knex('tags').insert(tagsInfo)
-        }
+        const tagsInfo = tags.split(',').map(tag => {
+            return {
+                name: tag.trim(),
+                user_id,
+                note_id
+            }
+        })
+        await knex('tags').insert(tagsInfo)
 
         if (links) {
             const linksInfo = links.split(',').map(link => {
@@ -78,6 +78,18 @@ class NotesController {
 }
 
 module.exports = NotesController
+
+function createInputValidation (title, description, tags, links) {
+    if (!title) {
+        throw new appError("You can't created a new note without a title.")
+    }
+    if (!description && !links) {
+        throw new appError("it's pointless creating a note with no description nor links")
+    }
+    if (!tags) {
+        throw new appError("please add some tag, to help you organize your notes")
+    }
+}
 
 async function getUserNotes (user_id, title = undefined) {
     let userNotes
