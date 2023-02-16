@@ -27,23 +27,15 @@ class UsersController {
 
         const user = await knex('users').where({ id }).first()
 
-        if (email) {
-            await updateEmailCheck ( email, user)
+        if ( await updateEmailCheck (email, user) ) {
+            user.email = email
         }
 
-        if (newPassword) {
-            if (newPassword && !currentPassword) {
-                throw new appError("you must provide your current password if you want it to be updated")
-            }
-            const passwordCheck = await compare(currentPassword, user.password)
-            if (!passwordCheck) {
-                throw new appError("the given password it's wrong!")
-            }
+        if ( await updatePasswordCheck (user, newPassword, currentPassword) ) {
             user.password = await hash( newPassword, 8 )
         }
         
         user.name = name ? name : user.name
-        user.email = email ? email : user.email
 
         await knex('users').where({ id }).update({ name: user.name, email: user.email, password: user.password, updated_at: knex.fn.now() })
 
@@ -54,8 +46,27 @@ class UsersController {
 module.exports = UsersController
 
 async function updateEmailCheck ( email, user) {
-    const userWithEmail = await knex('users').where({ email }).first()
-    if (userWithEmail && userWithEmail.id !== user.id) {
-        throw new appError("this email it's already in use")
+    if (email) {
+        const userWithEmail = await knex('users').where({ email }).first()
+        if (userWithEmail && userWithEmail.id !== user.id) {
+            throw new appError("this email it's already in use")
+        }
+        return true
     }
+    return false
+}
+
+async function updatePasswordCheck (user, newPassword, currentPassword) {
+
+    if (newPassword) {
+        if (newPassword && !currentPassword) {
+            throw new appError("you must provide your current password if you want it to be updated")
+        }
+        const passwordCheck = await compare(currentPassword, user.password)
+        if (!passwordCheck) {
+            throw new appError("the given password it's wrong!")
+        }
+        return passwordCheck
+    }
+    return false
 }
