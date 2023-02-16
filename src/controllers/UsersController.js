@@ -27,9 +27,8 @@ class UsersController {
 
         const user = await knex('users').where({ id }).first()
 
-        const userWithEmail = await knex('users').where({ email }).first()
-        if (userWithEmail && userWithEmail.id !== user.id) {
-            throw new appError("this email it's already in use")
+        if (email) {
+            await updateEmailCheck ( email, user)
         }
 
         if (newPassword) {
@@ -53,3 +52,10 @@ class UsersController {
 }
 
 module.exports = UsersController
+
+async function updateEmailCheck ( email, user) {
+    const userWithEmail = await knex('users').where({ email }).first()
+    if (userWithEmail && userWithEmail.id !== user.id) {
+        throw new appError("this email it's already in use")
+    }
+}
