@@ -3,7 +3,7 @@ const appError = require('./utils/appError')
 const uploadConfig = require('./configs/upload')
 
 const express = require('express')
-const cros = require('cors')
+const cors = require('cors')
 
 const routes = require('./routes')
 
