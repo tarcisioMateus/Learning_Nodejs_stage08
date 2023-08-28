@@ -9,7 +9,7 @@ class NotesController {
 
         createInputValidation (title, description, tags, links)
 
-        const note_id = await knex('notes').insert({ title, description, user_id })
+        const [note_id] = await knex('notes').insert({ title, description, user_id })
 
         const tagsInfo = tags.split(',').map(tag => {
             return {
