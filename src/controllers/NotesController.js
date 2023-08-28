@@ -148,7 +148,7 @@ function notesOneEntryOnly ( notes ) {
 
 function getNotesWithTags (userNotes, userTags) {
     const notesWithTags = userNotes.map( note => {
-        const noteTags = userTags.filter( tag => tag.note_id === note.id ).map( tag => tag.name)
+        const noteTags = userTags.filter( tag => tag.note_id === note.id )
        
         return {
             ...note,
