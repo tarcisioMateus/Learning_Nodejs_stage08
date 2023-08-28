@@ -9,7 +9,7 @@ const UserAvatarController = require('../controllers/UserAvatarController')
 const usersController = new UsersController()
 const userAvatarController = new UserAvatarController()
 
-const upload = multer(uploadConfig)
+const upload = multer(uploadConfig.MULTER)
 const usersRoutes = Router()
 
 usersRoutes.post('/', usersController.create)
