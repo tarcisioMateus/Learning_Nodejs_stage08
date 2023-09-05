@@ -1,4 +1,4 @@
-const appError = require('../utils/appError')
+const appError = require('../../utils/appError')
 const { hash, compare } = require('bcryptjs')
 
 class UpdateServices {
