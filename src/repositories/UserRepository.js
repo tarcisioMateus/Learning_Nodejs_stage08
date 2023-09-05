@@ -7,7 +7,11 @@ class UserRepository {
         return user
     }
 
-    
+    async create ({ name, email, password }) {
+        const [ id ] = await knex('users').insert({ name, email, password: cryptedPassword })
+
+        return {id}
+    }
 }
 
 module.exports = UserRepository
