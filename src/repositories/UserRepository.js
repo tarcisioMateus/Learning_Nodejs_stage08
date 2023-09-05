@@ -18,6 +18,10 @@ class UserRepository {
 
         return user
     }
+
+    async update ({ id, user }) {
+        await knex('users').where({ id }).update({ name: user.name, email: user.email, password: user.password, updated_at: knex.fn.now() })
+    }
 }
 
 module.exports = UserRepository
