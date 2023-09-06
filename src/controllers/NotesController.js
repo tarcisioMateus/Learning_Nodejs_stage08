@@ -7,30 +7,7 @@ class NotesController {
         const { title, description, tags, links } = request.body
         const user_id = request.user.id
 
-        createInputValidation (title, description, tags, links)
-
-        const [note_id] = await knex('notes').insert({ title, description, user_id })
-
-        if (tags.length > 0) {
-            const tagsInfo = tags.map(tag => {
-                return {
-                    name: tag.trim(),
-                    user_id,
-                    note_id
-                }
-            })
-            await knex('tags').insert(tagsInfo)
-        }
-
-        if (links.length > 0) {
-            const linksInfo = links.map(link => {
-                return {
-                    url: link.trim(),
-                    note_id
-                }
-            })
-            await knex('links').insert(linksInfo)
-        }
+        
 
         return response.status(201).json()
     }

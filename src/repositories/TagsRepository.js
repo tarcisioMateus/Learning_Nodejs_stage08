@@ -9,8 +9,7 @@ class TagsRepository {
         note_id
       }
     })
-    const [tags_id] = await knex('tags').insert(tagsInfo)
-    return tags_id
+    await knex('tags').insert(tagsInfo)
   }
 
   async getByNoteId({ note_id }) {
