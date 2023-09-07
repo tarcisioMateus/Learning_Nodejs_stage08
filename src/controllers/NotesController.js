@@ -24,11 +24,7 @@ class NotesController {
     async show (request, response) {
         const { id } = request.params 
 
-        const note = await knex('notes').where({ id }).first() 
 
-        let tags = await knex('tags').where({note_id: id}).orderBy("name")
-
-        let links = await knex('links').where({note_id: id}).orderBy("created_at")
 
         return response.json({
             ...note,
