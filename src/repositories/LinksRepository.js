@@ -8,8 +8,7 @@ class LinksRepository {
         note_id
       }
     })
-    const [ links_id ] = await knex('links').insert(linksInfo)
-    return links_id
+    await knex('links').insert(linksInfo)
   }
 
   async getByNoteId({ note_id }) {
