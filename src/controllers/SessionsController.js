@@ -1,24 +1,19 @@
-const knex = require("../database/knex")
+const UserRepository = require('../repositories/UserRepository')
+
+const CreateServices = require('../services/sessions/CreateServices')
 
 class SessionsController {
+  userRepository = new UserRepository()
+
   async create(request, response) {
     const { email, password } = request.body
 
-    const user = await knex('users').where({email}).first()
-
-    if (!user) throw new appError('wrong email or password', 401)
-
-    const passwordMatched = await compare(password, user.password)
-
-    if (!passwordMatched) throw new appError('wrong email or password', 401)
-
-    const { secret, expiresIn } = authConfig.jwt
-    const token = sign({}, secret, {
-      subject: String(user.id),
-      expiresIn
+    const createServices = new CreateServices({
+      userRepository: this.userRepository
     })
+    const data = await createServices.execute({ email, password })
 
-    return response.json({ token, user })
+    return response.json(data)
   }
 }
 
