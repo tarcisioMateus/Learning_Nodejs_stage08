@@ -21,7 +21,7 @@ class UserRepository {
 
     async update ({ id, user }) {
         const updated = await knex('users').where({ id }).update({ 
-            name: user.name, email: user.email, 
+            name: user.name, email: user.email, avatar: user.avatar, 
             password: user.password, updated_at: knex.fn.now() 
         }, ['name', 'email'])
 
