@@ -1,23 +1,21 @@
-const knex = require("../database/knex")
-const appError = require("../utils/appError")
 const DiskStorage = require("../providers/DiskStorage")
+const UserRepository = require('../repositories/UserRepository')
+
+const UpdateServices = require('../services/user/avatar/UpdateServices')
 
 class UserAvatarController {
+  diskStorage = new DiskStorage()
+  userRepository = new UserRepository()
 
   async update(request, response) {
     const user_id = request.user.id
-    const avatarfileName = request.file.filename
+    const avatarFileName = request.file.filename
     
-    const diskStorage = new DiskStorage()
-
-    const user = await knex('users').where({id: user_id}).first()
-
-    if (!user) throw new appError("only authenticated users can update the profile")
-
-    if (user.avatar) await diskStorage.deleteFile(user.avatar)
-
-    user.avatar = await diskStorage.saveFile(avatarfileName)
-    await knex('users').update(user).where({id: user_id})
+    const updateServices = new UpdateServices ({
+      userRepository: this.userRepository, 
+      diskStorage: this.diskStorage
+    })
+    const user = await updateServices.execute({ id: user_id, avatarFileName })
 
     return response.json(user)
   }
