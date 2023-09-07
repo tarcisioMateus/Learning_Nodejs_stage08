@@ -14,12 +14,3 @@ class TagsController {
 
 module.exports = TagsController
 
-function tagsOneEntryOnly ( tags ) {
-    let filteredTags = []
-    for ( const tag of tags ) {
-        if ( !filteredTags.includes(tag) ) {
-            filteredTags.push(tag)
-        }
-    }
-    return filteredTags
-}
