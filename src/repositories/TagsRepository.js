@@ -23,4 +23,4 @@ class TagsRepository {
   }
 }
 
-module.exports = TagRepository
+module.exports = TagsRepository
