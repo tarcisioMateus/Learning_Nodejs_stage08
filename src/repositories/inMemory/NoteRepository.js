@@ -67,7 +67,8 @@ class NoteRepository {
   }
 
   async removeById({ id }) {
-    await knex('notes').where({ id }).delete()
+    const index = this.notes.findIndex( note => note.id === id )
+    this.notes[ index ] = {}
   }
 }
 
