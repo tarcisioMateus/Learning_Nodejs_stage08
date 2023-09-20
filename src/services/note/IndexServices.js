@@ -16,7 +16,7 @@ class IndexServices {
     }
 
     const userTags = await this.tagsRepository.getUserTags({ user_id })
-
+    
     const notesWithTags = getNotesWithTags (userNotes, userTags)
 
     return notesWithTags
@@ -41,9 +41,9 @@ async function searchWithTags ({ tags, user_id, noteRepository,  title = undefin
   const mappedTags = tags.split(',').map(tag => tag.trim())
 
   if (title) {
-    userNotes = await noteRepository.getUserNotesByTagsAndTitle({ tags, title, user_id })
+    userNotes = await noteRepository.getUserNotesByTagsAndTitle({ mappedTags, title, user_id })
   } else {
-    userNotes = await noteRepository.getUserNotesByTags({ tags, user_id })
+    userNotes = await noteRepository.getUserNotesByTags({ mappedTags, user_id })
   }
   userNotes = notesOneEntryOnly( userNotes )
   return userNotes

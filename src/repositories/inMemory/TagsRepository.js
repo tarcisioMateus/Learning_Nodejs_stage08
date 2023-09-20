@@ -1,10 +1,12 @@
+const { randomUUID } = require('crypto')
+
 class TagsRepository {
   tags = []
 
   async create({ tags, user_id, note_id }) {
     for (const tag of tags) {
       const newEntry = {
-        id: generateAvalibleId( this.tags ),
+        id: randomUUID(),
         name: tag.trim(),
         user_id,
         note_id
@@ -25,10 +27,3 @@ class TagsRepository {
 }
 
 module.exports = TagsRepository
-
-function generateAvalibleId( tags ) {
-  if ( tags.length === 0) return 1
-
-  const lastElement = tags.slice(-1)
-  return (lastElement.id + 1)
-}

@@ -1,3 +1,5 @@
+const { randomUUID } = require('crypto')
+
 class UserRepository {
   users = []
 
@@ -9,7 +11,7 @@ class UserRepository {
 
   async create ({ name, email, password }) {
     const user = {
-      id: this.users.length + 1, 
+      id: randomUUID(), 
       avatar: null,
       name, email, password
     }

@@ -1,10 +1,12 @@
+const { randomUUID } = require('crypto')
+
 class NoteRepository {
   notes = []
   tags = []
 
   async create({ title, description, user_id }) {
     const note = {
-      id: generateAvalibleId( this.notes ),
+      id: randomUUID(),
       title, description, user_id
     }
     this.notes.push(note)
@@ -73,10 +75,3 @@ class NoteRepository {
 }
 
 module.exports = NoteRepository
-
-function generateAvalibleId( notes ) {
-  if ( notes.length === 0) return 1
-
-  const lastElement = notes.slice(-1)
-  return (lastElement.id + 1)
-}
