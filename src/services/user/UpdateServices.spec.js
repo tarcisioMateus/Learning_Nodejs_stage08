@@ -5,7 +5,7 @@ const SessionsCreateServices = require('../sessions/CreateServices')
 const UserRepository = require('../../repositories/inMemory/UserRepository')
 const appError = require('../../utils/appError')
 
-describe("UserUpdateServices", () => {
+describe("User/ UpdateServices", () => {
   let userRepository = null
   let createServices = null
   let updateServices = null

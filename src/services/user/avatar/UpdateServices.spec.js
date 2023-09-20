@@ -4,7 +4,7 @@ const UpdateServices = require('./UpdateServices')
 const DiskStorage = require('../../../providers/DiskStorageInMemory')
 const UserRepository = require('../../../repositories/inMemory/UserRepository')
 
-describe("User/ AvatarUpdateServices", () => {
+describe("User/Avatar/ UpdateServices", () => {
   let userRepository = null
   let diskStorage = null
 
