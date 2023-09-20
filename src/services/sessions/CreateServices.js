@@ -11,7 +11,7 @@ class CreateServices {
   }
 
   async execute({ email, password }) {
-    const user = await this.userRepository.findByEmail (email)
+    const user = await this.userRepository.findByEmail(email)
 
     if (!user) throw new appError('wrong email or password', 401)
 
