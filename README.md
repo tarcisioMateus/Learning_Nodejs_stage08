@@ -19,7 +19,7 @@ allows the user to update each of he's information individualy i.e. now he can u
 - notesOneEntryOnly{}   and   tagsOneEntryOnly{}
 when making an index search these functions will filter the notes and tags, asuring that'll be returned only one of each.
 
-## Client to connet with this aplication
+## Client to connect with this application
 https://github.com/tarcisioMateus/rocketnotes
 
 ## Tech Stack
