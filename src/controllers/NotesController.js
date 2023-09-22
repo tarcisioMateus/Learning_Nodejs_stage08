@@ -6,7 +6,6 @@ const CreateServices = require('../services/note/CreateServices')
 const IndexServices = require('../services/note/IndexServices')
 const ShowServices = require('../services/note/ShowServices')
 const DeleteServices = require('../services/note/DeleteServices')
-const DeleteServices = require('../services/note/DeleteServices')
 
 
 class NotesController {
@@ -20,7 +19,7 @@ class NotesController {
 
         const createServices = new CreateServices({ 
             noteRepository: this.noteRepository, 
-            tagsRepositor: this.tagsRepository, 
+            tagsRepository: this.tagsRepository, 
             linksRepository: this.linksRepository 
         })
         const note = await createServices.execute({ title, description, tags, links, user_id })
@@ -34,7 +33,7 @@ class NotesController {
 
         const indexServices = new IndexServices({
             noteRepository: this.noteRepository, 
-            tagsRepositor: this.tagsRepository
+            tagsRepository: this.tagsRepository
         })
         const notes = await indexServices.execute({ title, tags, user_id })
 
@@ -46,7 +45,7 @@ class NotesController {
 
         const showServices = new ShowServices({ 
             noteRepository: this.noteRepository, 
-            tagsRepositor: this.tagsRepository, 
+            tagsRepository: this.tagsRepository, 
             linksRepository: this.linksRepository 
         })
         const data = await showServices.execute({ id })
