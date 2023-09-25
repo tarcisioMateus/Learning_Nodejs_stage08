@@ -3,7 +3,7 @@ class IndexServices {
     this.tagsRepository = tagsRepository
   }
 
-  async execute() {
+  async execute({ user_id }) {
     let tags = await this.tagsRepository.getUserTags({ user_id })
     tags = tags.map( tag => tag.name )
     tags = tagsOneEntryOnly ( tags )

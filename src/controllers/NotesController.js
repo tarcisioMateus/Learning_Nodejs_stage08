@@ -9,18 +9,15 @@ const DeleteServices = require('../services/note/DeleteServices')
 
 
 class NotesController {
-    noteRepository = new NoteRepository()
-    tagsRepository = new TagsRepository()
-    linksRepository = new LinksRepository()
 
     async create (request, response) {
         const { title, description, tags, links } = request.body
         const user_id = request.user.id
 
         const createServices = new CreateServices({ 
-            noteRepository: this.noteRepository, 
-            tagsRepository: this.tagsRepository, 
-            linksRepository: this.linksRepository 
+            noteRepository: new NoteRepository(), 
+            tagsRepository: new TagsRepository(), 
+            linksRepository: new LinksRepository() 
         })
         const note = await createServices.execute({ title, description, tags, links, user_id })
 
@@ -32,8 +29,8 @@ class NotesController {
         const user_id = request.user.id
 
         const indexServices = new IndexServices({
-            noteRepository: this.noteRepository, 
-            tagsRepository: this.tagsRepository
+            noteRepository: new NoteRepository(), 
+            tagsRepository: new TagsRepository()
         })
         const notes = await indexServices.execute({ title, tags, user_id })
 
@@ -44,9 +41,9 @@ class NotesController {
         const { id } = request.params 
 
         const showServices = new ShowServices({ 
-            noteRepository: this.noteRepository, 
-            tagsRepository: this.tagsRepository, 
-            linksRepository: this.linksRepository 
+            noteRepository: new NoteRepository(), 
+            tagsRepository: new TagsRepository(), 
+            linksRepository: new LinksRepository()
         })
         const data = await showServices.execute({ id })
 
@@ -57,7 +54,7 @@ class NotesController {
         const { id } = request.params
 
         const deleteServices = new DeleteServices({
-            noteRepository: this.noteRepository
+            noteRepository: new NoteRepository()
         })
         await deleteServices.execute({ id })
 
